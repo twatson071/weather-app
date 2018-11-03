@@ -11,7 +11,6 @@ export class AppComponent {
   searchWeather(searchTerm) {
     getSearchMethod(searchTerm);
     fetch(`http://api.openweathermap.org/data/2.5/weather?${searchMethod}=${searchTerm}&APPID=${appId}&units=${units}`).then(result => {
-      console.log(result);
       return result.json();
     }).then(result => {
       init(result);
@@ -29,13 +28,14 @@ function getSearchMethod(searchTerm) {
     searchMethod = 'q';
 }
 function init(resultFromServer) {
+  console.log(resultFromServer.weather[0]);
   switch (resultFromServer.weather[0].main) {
     case 'Clear':
       document.body.style.backgroundImage = 'url("../assets/images/clear.jpg")';
       break;
     case 'Clouds':
-      document.body.style.backgroundImage = 'url("../assets/images/clouds.jpg")';
-
+      document.body.style.backgroundImage = 'url("../assets/images/cloudy.jpg")';
+      break;
     case 'Rain':
     case 'Drizzle':
     case 'Mist':
