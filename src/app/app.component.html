@@ -1,7 +1,9 @@
 <div id="searchContainer">
-  <input class="searchControl" [(ngModel)]="searchTerm" type="text" name="searchTerm" placeholder="City Name or Zip code"
-    id="searchInput">
-  <button class="searchControl" (click)="searchWeather(searchTerm)" id="searchBtn">Search</button>
+  <form (submit)="showWeather(searchTerm)">
+    <input class="searchControl" [(ngModel)]="searchTerm" type="text" name="searchTerm" placeholder="City Name or Zip code"
+      id="searchInput">
+    <button class="searchControl" (click)="showWeather(searchTerm)" id="searchBtn">Search</button>
+  </form>
 </div>
 <div id="weatherContainer">
   <div id=weatherDescription>

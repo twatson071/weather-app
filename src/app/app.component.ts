@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -6,28 +8,27 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(private appService: AppService) { }
   title = 'weather-app';
   searchTerm = 'San Diego';
-  searchWeather(searchTerm) {
-    getSearchMethod(searchTerm);
-    fetch(`http://api.openweathermap.org/data/2.5/weather?${searchMethod}=${searchTerm}&APPID=${appId}&units=${units}`).then(result => {
-      return result.json();
-    }).then(result => {
-      init(result);
-    })
+  searchMethod = getSearchMethod(this.searchTerm);
+  showWeather(searchTerm) {
+    this.appService.getWeather(searchTerm, searchMethod).subscribe(
+      data => {
+        changeBackground(data);
+      }
+    );
   }
-
 }
-let appId = 'c77450d0bc6490eab069d2efed7f8591';
-let units = 'imperial';
-let searchMethod = 'zip'
+let searchMethod = 'zip';
 function getSearchMethod(searchTerm) {
+
   if (searchTerm.length === 5 && Number.parseInt(searchTerm) + '' === searchTerm)
     searchMethod = 'zip';
   else
     searchMethod = 'q';
 }
-function init(resultFromServer) {
+function changeBackground(resultFromServer) {
   console.log(resultFromServer.weather[0]);
   switch (resultFromServer.weather[0].main) {
     case 'Clear':
