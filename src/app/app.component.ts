@@ -11,16 +11,22 @@ export class AppComponent {
   constructor(private appService: AppService) { }
   title = 'weather-app';
   searchTerm = 'San Diego';
+  temperature = 0;
   searchMethod = getSearchMethod(this.searchTerm);
   showWeather(searchTerm) {
     this.appService.getWeather(searchTerm, searchMethod).subscribe(
       data => {
         changeBackground(data);
+        this.temperature = getTemprature(data);
       }
     );
   }
 }
+
 let searchMethod = 'zip';
+function getTemprature(data) {
+  return data.main.temp;
+}
 function getSearchMethod(searchTerm) {
 
   if (searchTerm.length === 5 && Number.parseInt(searchTerm) + '' === searchTerm)
@@ -29,7 +35,7 @@ function getSearchMethod(searchTerm) {
     searchMethod = 'q';
 }
 function changeBackground(resultFromServer) {
-  console.log(resultFromServer.weather[0]);
+  console.log(resultFromServer);
   switch (resultFromServer.weather[0].main) {
     case 'Clear':
       document.body.style.backgroundImage = 'url("../assets/images/clear.jpg")';
